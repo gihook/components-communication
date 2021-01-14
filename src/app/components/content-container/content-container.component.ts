@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ComputerItem } from '../models/models';
 
 @Component({
   selector: 'app-content-container',
   templateUrl: './content-container.component.html',
-  styleUrls: ['./content-container.component.scss']
+  styleUrls: ['./content-container.component.scss'],
 })
 export class ContentContainerComponent implements OnInit {
+  @Input() computerItem: ComputerItem;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
