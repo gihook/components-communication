@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CommunicationService } from 'src/app/services/communication.service';
 import { ComputerItem, MenuItem } from '../models/models';
 
 @Component({
@@ -12,6 +13,8 @@ export class SideMenuComponent implements OnInit {
   selectedItemId: number;
   computerItems: ComputerItem[] = [];
   menuItems: MenuItem[] = [];
+
+  constructor(private communicationService: CommunicationService) {}
 
   ngOnInit(): void {
     const computerItems = [
@@ -46,5 +49,6 @@ export class SideMenuComponent implements OnInit {
     this.selectedItemId = item.id;
     this.bindMenuItems(this.menuItems);
     this.emitItem(item);
+    this.communicationService.emitItem(item);
   }
 }
