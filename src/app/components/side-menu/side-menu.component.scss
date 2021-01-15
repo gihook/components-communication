@@ -1,0 +1,10 @@
+li {
+  font-size: 20px;
+  text-align: center;
+
+  &:hover {
+    font-weight: bold;
+    background-color: gray;
+    cursor: pointer;
+  }
+}
