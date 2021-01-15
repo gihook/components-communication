@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { ComputerItem } from '../models/models';
+import { SimpleStore } from '../store/simple-store';
 
 export interface State {
   selectItem: ComputerItem;
@@ -14,23 +14,21 @@ const defaultValue: State = {
 
 @Injectable({ providedIn: 'root' })
 export class CommunicationService {
-  private state$ = new BehaviorSubject<State>(defaultValue);
+  private store: SimpleStore<State>;
+
+  constructor() {
+    this.store = new SimpleStore(defaultValue);
+  }
 
   getState$() {
-    return this.state$.asObservable();
+    return this.store.getState$();
   }
 
   setAllComputerItems(items: ComputerItem[]) {
-    this.patchState({ allComputerItems: items });
+    this.store.patchState({ allComputerItems: items });
   }
 
   setSelectedItem(item: ComputerItem) {
-    this.patchState({ selectItem: item });
-  }
-
-  patchState(partialState: Partial<State>) {
-    const existingState = this.state$.value;
-    const newState = { ...existingState, ...partialState };
-    this.state$.next(newState);
+    this.store.patchState({ selectItem: item });
   }
 }
