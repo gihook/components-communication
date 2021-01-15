@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ComputerItem } from '../models/models';
 
-interface State {
+export interface State {
   selectItem: ComputerItem;
   allComputerItems: ComputerItem[];
 }

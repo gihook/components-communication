@@ -1,5 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ComputerItem } from 'src/app/models/models';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import {
+  CommunicationService,
+  State,
+} from 'src/app/services/communication-service';
 
 @Component({
   selector: 'app-content-container',
@@ -7,9 +11,11 @@ import { ComputerItem } from 'src/app/models/models';
   styleUrls: ['./content-container.component.scss'],
 })
 export class ContentContainerComponent implements OnInit {
-  @Input() computerItem: ComputerItem;
+  fullState$: Observable<State>;
 
-  constructor() {}
+  constructor(private communicationService: CommunicationService) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.fullState$ = this.communicationService.getState$();
+  }
 }
