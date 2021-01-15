@@ -1,15 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
-interface MenuItem {
-  id: number;
-  displayValue: string;
-  isSelected: boolean;
-}
-
-interface ComputerItem {
-  id: number;
-  displayValue: string;
-}
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ComputerItem, MenuItem } from '../../models/models';
 
 @Component({
   selector: 'app-side-menu',
@@ -17,6 +7,8 @@ interface ComputerItem {
   styleUrls: ['./side-menu.component.scss'],
 })
 export class SideMenuComponent implements OnInit {
+  @Output() itemSelected = new EventEmitter<ComputerItem>();
+
   selectedItemId: number;
   computerItems: ComputerItem[] = [];
   menuItems: MenuItem[] = [];
@@ -49,5 +41,6 @@ export class SideMenuComponent implements OnInit {
   selectItem(item: MenuItem) {
     this.selectedItemId = item.id;
     this.bindMenuItems(this.menuItems);
+    this.itemSelected.emit(item);
   }
 }

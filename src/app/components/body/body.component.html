@@ -1,9 +1,10 @@
 <div class="body-container">
   <div class="content-menu">
-    <app-side-menu> </app-side-menu>
+    <app-side-menu (itemSelected)="seletedItem = $event"></app-side-menu>
   </div>
 
   <div class="content-container">
-    <app-content-container> </app-content-container>
+    <app-content-container [computerItem]="seletedItem">
+    </app-content-container>
   </div>
 </div>
