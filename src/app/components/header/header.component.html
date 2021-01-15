@@ -1,1 +1,3 @@
-<p>header works!</p>
+<h1 *ngIf="item$ | async as item">
+  {{ item.displayValue }}
+</h1>

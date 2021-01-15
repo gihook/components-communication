@@ -1,12 +1,12 @@
 <div class="container">
-  <div class="header">
+  <div (click)="isFooterVisible = !isFooterVisible" class="header">
     <app-header></app-header>
   </div>
 
   <div class="body">
     <app-body></app-body>
   </div>
-  <div class="footer">
+  <div *ngIf="isFooterVisible" class="footer">
     <app-footer></app-footer>
   </div>
 </div>

@@ -1,5 +1,9 @@
-<ul>
-  <li *ngFor="let item of computerItems">
+<ul *ngIf="menuItems$ | async as menuItems">
+  <li
+    *ngFor="let item of menuItems"
+    [ngClass]="{ selected: item.isSelected }"
+    (click)="selectItem(item)"
+  >
     {{ item.displayValue }}
   </li>
 </ul>

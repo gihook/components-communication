@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ComputerItem } from '../../models/models';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CommunicationService } from 'src/app/services/communication-service';
+import { ComputerItem, MenuItem } from '../../models/models';
 
 @Component({
   selector: 'app-side-menu',
@@ -7,18 +10,31 @@ import { ComputerItem } from '../../models/models';
   styleUrls: ['./side-menu.component.scss'],
 })
 export class SideMenuComponent implements OnInit {
-  computerItems: ComputerItem[] = [];
+  menuItems$: Observable<MenuItem[]>;
 
-  constructor() {}
+  constructor(private communicationService: CommunicationService) {}
 
-  ngOnInit(): void {
-    const computerItems = [
-      { id: 1, displayValue: 'Monitor' },
-      { id: 2, displayValue: 'Keyboard' },
-      { id: 3, displayValue: 'Laptop' },
-      { id: 4, displayValue: 'Mouse' },
-    ];
+  ngOnInit() {
+    this.menuItems$ = this.communicationService.getState$().pipe(
+      map((state) => {
+        const { allComputerItems, selectItem } = state;
 
-    this.computerItems = computerItems;
+        return allComputerItems.map((item) =>
+          this.mapToMenuItem(item, selectItem)
+        );
+      })
+    );
+  }
+
+  selectItem(item: MenuItem) {
+    this.communicationService.setSelectedItem(item);
+  }
+
+  private mapToMenuItem(
+    computerItem: ComputerItem,
+    selectedItem: ComputerItem
+  ) {
+    const isSelected = computerItem.id === selectedItem.id;
+    return { ...computerItem, isSelected };
   }
 }
