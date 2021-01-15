@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ComputerItem } from 'src/app/models/models';
+import { ComputerItem } from '../../models/models';
 
 @Component({
   selector: 'app-side-menu',
