@@ -1,4 +1,4 @@
-<ul>
+<ul *ngIf="menuItems$ | async as menuItems">
   <li
     *ngFor="let item of menuItems"
     [ngClass]="{ selected: item.isSelected }"

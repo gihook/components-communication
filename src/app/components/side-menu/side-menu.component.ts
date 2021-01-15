@@ -1,4 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CommunicationService } from 'src/app/services/communication-service';
 import { ComputerItem, MenuItem } from '../../models/models';
 
 @Component({
@@ -11,27 +14,32 @@ export class SideMenuComponent implements OnInit {
 
   selectedItemId: number;
   computerItems: ComputerItem[] = [];
-  menuItems: MenuItem[] = [];
+  // menuItems: MenuItem[] = [];
+  menuItems$: Observable<MenuItem[]>;
+
+  constructor(private communicationService: CommunicationService) {}
 
   ngOnInit(): void {
-    const computerItems = [
-      { id: 1, displayValue: 'Monitor' },
-      { id: 2, displayValue: 'Keyboard' },
-      { id: 3, displayValue: 'Laptop' },
-      { id: 4, displayValue: 'Mouse' },
-    ];
+    this.menuItems$ = this.communicationService.getState$().pipe(
+      map((state) => {
+        const { allComputerItems, selectItem } = state;
 
-    this.bindMenuItems(computerItems);
+        return allComputerItems.map((item) => {
+          const isSelected = item.id === selectItem.id;
+          return { ...item, isSelected };
+        });
+      })
+    );
   }
 
-  private bindMenuItems(computerItems: ComputerItem[]) {
-    this.menuItems = computerItems.map((computerItem) => {
-      const isSelected = this.isSelectedItem(computerItem.id);
-      const menuItem = { ...computerItem, isSelected };
+  // private bindMenuItems(computerItems: ComputerItem[]) {
+  //   this.menuItems = computerItems.map((computerItem) => {
+  //     const isSelected = this.isSelectedItem(computerItem.id);
+  //     const menuItem = { ...computerItem, isSelected };
 
-      return menuItem;
-    });
-  }
+  //     return menuItem;
+  //   });
+  // }
 
   isSelectedItem(itemId: number) {
     console.log({ isSelectedItem: true });
@@ -40,7 +48,8 @@ export class SideMenuComponent implements OnInit {
 
   selectItem(item: MenuItem) {
     this.selectedItemId = item.id;
-    this.bindMenuItems(this.menuItems);
+    // this.bindMenuItems(this.menuItems);
     this.itemSelected.emit(item);
+    this.communicationService.emitItem(item);
   }
 }
