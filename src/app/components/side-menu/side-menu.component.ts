@@ -12,9 +12,6 @@ import { ComputerItem, MenuItem } from '../../models/models';
 export class SideMenuComponent implements OnInit {
   @Output() itemSelected = new EventEmitter<ComputerItem>();
 
-  selectedItemId: number;
-  computerItems: ComputerItem[] = [];
-  // menuItems: MenuItem[] = [];
   menuItems$: Observable<MenuItem[]>;
 
   constructor(private communicationService: CommunicationService) {}
@@ -32,24 +29,8 @@ export class SideMenuComponent implements OnInit {
     );
   }
 
-  // private bindMenuItems(computerItems: ComputerItem[]) {
-  //   this.menuItems = computerItems.map((computerItem) => {
-  //     const isSelected = this.isSelectedItem(computerItem.id);
-  //     const menuItem = { ...computerItem, isSelected };
-
-  //     return menuItem;
-  //   });
-  // }
-
-  isSelectedItem(itemId: number) {
-    console.log({ isSelectedItem: true });
-    return this.selectedItemId === itemId;
-  }
-
   selectItem(item: MenuItem) {
-    this.selectedItemId = item.id;
-    // this.bindMenuItems(this.menuItems);
+    this.communicationService.setSelectedItem(item);
     this.itemSelected.emit(item);
-    this.communicationService.emitItem(item);
   }
 }
