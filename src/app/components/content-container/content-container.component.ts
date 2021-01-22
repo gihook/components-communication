@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import {
   CommunicationService,
   State,
@@ -16,6 +17,11 @@ export class ContentContainerComponent implements OnInit {
   constructor(private communicationService: CommunicationService) {}
 
   ngOnInit() {
-    this.fullState$ = this.communicationService.getState$();
+    this.fullState$ = this.communicationService.getState$().pipe(
+      tap((state) => {
+        const items = state.allComputerItems;
+        console.table(items);
+      })
+    );
   }
 }

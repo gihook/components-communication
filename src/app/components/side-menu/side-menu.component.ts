@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommunicationService } from 'src/app/services/communication-service';
+import { LoggerService } from 'src/app/services/logger.service';
 import { ComputerItem, MenuItem } from '../../models/models';
 
 @Component({
@@ -12,7 +13,10 @@ import { ComputerItem, MenuItem } from '../../models/models';
 export class SideMenuComponent implements OnInit {
   menuItems$: Observable<MenuItem[]>;
 
-  constructor(private communicationService: CommunicationService) {}
+  constructor(
+    private communicationService: CommunicationService,
+    private loggerService: LoggerService
+  ) {}
 
   ngOnInit() {
     this.menuItems$ = this.communicationService.getState$().pipe(
@@ -27,6 +31,7 @@ export class SideMenuComponent implements OnInit {
   }
 
   selectItem(item: MenuItem) {
+    this.loggerService.log('Item selected');
     this.communicationService.setSelectedItem(item);
   }
 
